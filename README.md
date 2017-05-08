@@ -56,14 +56,14 @@ npm install --save-dev typescript @types/node @types/express @types/request @typ
 }
 ```
 
-可以项目的需求自行添加[其他编译选项](https://www.typescriptlang.org/docs/handbook/compiler-options.html)，比如`strict`。
+可以根据项目的需求自行添加[其他编译选项](https://www.typescriptlang.org/docs/handbook/compiler-options.html)，比如`strict`。
 
 ## 获取jsapi_ticket
 
 对应[通过config接口注入权限验证配置](https://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html#.E6.AD.A5.E9.AA.A4.E4.B8.89.EF.BC.9A.E9.80.9A.E8.BF.87config.E6.8E.A5.E5.8F.A3.E6.B3.A8.E5.85.A5.E6.9D.83.E9.99.90.E9.AA.8C.E8.AF.81.E9.85.8D.E7.BD.AE)文档，调用微信JSSDK需要在自己的服务器后台向微信服务器获取jsapi_ticket并在前端通过`wx.config`进行验证。大致实现流程，
 
 <p align="center">
-    <img src ="images/server_diagram.png"/>
+    <img src ="images/server_diagram.PNG"/>
 </p>
 
 在根目录添加后台的初始文件`index.ts`，
@@ -246,5 +246,5 @@ node run-script build-ts
 将页面所在的网址转换成二维码，打开微信扫一扫便可看到成果。
 
 <p align="center">
-    <img src ="images/demo.png"/>
+    <img src ="images/demo.PNG"/>
 </p>
