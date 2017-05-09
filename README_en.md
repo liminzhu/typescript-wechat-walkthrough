@@ -1,4 +1,4 @@
-[中文版](README.md)
+[中文版](README.md) (Chinese Version of this walkthrough)
 
 This tutorial covers a basic sample using [WeChat JSSDK](https://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html) and TypeScript together.
 
@@ -43,7 +43,7 @@ Install TypeScript and type definition files for installed packages,
 npm install --save-dev typescript @types/node @types/express @types/request @types/sha1
 ```
 
-Since [DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped) does not have type definitions for WeChat JSSDK at the mement , please copy the `types` folder containing [wechat.d.ts](/types/wechat.d.ts) to the project root folder (`wxapp`).
+Since [DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped) does not have type definitions for WeChat JSSDK at the mement , copy the `types` folder containing [wechat.d.ts](/types/wechat.d.ts) to the project root folder (`wxapp`).
 
 ## Configure TypeScript
 
