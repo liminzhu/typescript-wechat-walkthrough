@@ -43,7 +43,7 @@ Install TypeScript and type definition files for installed packages,
 npm install --save-dev typescript @types/node @types/express @types/request @types/sha1
 ```
 
-Since [DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped) does not have type definitions for WeChat JSSDK at the mement , please copy the `types` folder containing `wechat.d.ts` to the project root folder (`wxapp`).
+Since [DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped) does not have type definitions for WeChat JSSDK at the mement , please copy the `types` folder containing [wechat.d.ts](/types/wechat.d.ts) to the project root folder (`wxapp`).
 
 ## Configure TypeScript
 
@@ -216,7 +216,7 @@ Create `views` folder under the root folder and add `index.html`,
 
 `index.html` includes the JSSDK (`http://res.wx.qq.com/open/js/jweixin-1.0.0.js`) and a simple demo (`/js/demo.js`). The embedded JavaScript includes rendered signature from `getWXConfig` and uses `wx.config` to get API permission from WeChat.
 
-## demo.js
+## demo.ts
 
 Create `public/js` folder under the root folder, and add `demo.ts`,
 
@@ -236,7 +236,7 @@ wx.ready(() => {
 wx.error((err) => alert(err));
 ```
 
-In this simple demo, we only use `wx.openLocation` to open a map, but you can try calling any API from `JsApiList` in `demo.js`.
+In this simple demo, we only use `wx.openLocation` to open a map, but you can try calling any API from `JsApiList` in `demo.ts`.
 
 # Build and deploy
 

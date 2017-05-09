@@ -43,7 +43,7 @@ npm install --save express ejs request sha1
 npm install --save-dev typescript @types/node @types/express @types/request @types/sha1
 ```
 
-由于暂时[DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)中并没有JSSDK相关的类型定义文件(.d.ts)，请将本项目中的`types`文件夹（包含类型定义文件`wechat.d.ts`）复制到根目录（`wxapp`）中以便TypeScript获取JSSDK的类型定义。
+由于暂时[DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)中并没有JSSDK相关的类型定义文件(.d.ts)，请将本项目中的`types`文件夹（包含类型定义文件[wechat.d.ts](types/wechat.d.ts)）复制到根目录（`wxapp`）中以便TypeScript获取JSSDK的类型定义。
 
 ## 配置TypeScript
 
@@ -214,7 +214,7 @@ app.use(express.static('public'))                       // expose assets in /pub
 
 `index.html`中引入了微信JSSDK（`http://res.wx.qq.com/open/js/jweixin-1.0.0.js`）以及将在客户端实现的简单的demo（`/js/demo.js`）。嵌入的JavaScript包含了之前渲染的`getWXConfig`提供的讯息并通过`wx.config`注入权限验证配置。
 
-## demo.js
+## demo.ts
 
 在根目录下建立`public/js`文件夹，并在其中添加`demo.ts`,
 
@@ -234,7 +234,7 @@ wx.ready(() => {
 wx.error((err) => alert(err));
 ```
 
-在这个简化的例子中，我们仅使用`wx.openLocation`打开地图，但在`demo.js`中你可以尝试使用任何在`JsApiList`中申请的API。
+在这个简化的例子中，我们仅使用`wx.openLocation`打开地图，但在`demo.ts`中你可以尝试使用任何在`JsApiList`中申请的API。
 
 # 生成与部署
 
