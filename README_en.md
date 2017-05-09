@@ -1,20 +1,20 @@
-[English version](README_en.md)
+[中文版](README.md)
 
-本教程将覆盖了基本的在使用[微信JSSDK](https://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html)的网页上运用TypeScript的例子。
+This tutorial covers a basic sample using [WeChat JSSDK](https://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html) and TypeScript together.
 
-# 开始之前
+# Before you start
 
-1. 安装[node.js](https://nodejs.org/en/download/)。
+1. Install [node.js](https://nodejs.org/en/download/).
 
-1. 拥有/申请网页将使用的域名以及能够使用Node.js的服务器。可参照[Create a Node.js Application on Web App](https://docs.microsoft.com/en-us/azure/app-service-web/app-service-web-get-started-nodejs)文档使用Azure。
+1. Get your own domain and node.js server. See [Create a Node.js Application on Web App](https://docs.microsoft.com/en-us/azure/app-service-web/app-service-web-get-started-nodejs) for using Azure.
 
-2. 完成微信开发文档[步骤一：绑定域名](https://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html#.E6.AD.A5.E9.AA.A4.E4.B8.80.EF.BC.9A.E7.BB.91.E5.AE.9A.E5.9F.9F.E5.90.8D)。如果没有自己的公众号，可注册并使用微信[测试号](https://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=sandbox/login)。记录下自己的appId, appsecret以及将使用的URL。
+2. Finish [step 1 - binding domain name](https://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html#.E6.AD.A5.E9.AA.A4.E4.B8.80.EF.BC.9A.E7.BB.91.E5.AE.9A.E5.9F.9F.E5.90.8D). If you don't have an official WeChat account, you can apply for a [test account](https://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=sandbox/login). Keep your appId, appsecret and URL at hand.
 
-# 搭建node.js/express后台
+# Set up node.js/express
 
-## 初始
+## Initial steps
 
-建立一个新的npm package,
+Create a new package,
 
 ```
 mkdir wxapp
@@ -22,7 +22,7 @@ cd wxapp
 npm init
 ```
 
-在生成的`package.json`的`scripts`中添加以下scripts,
+In `scripts` in `package.json`, add,
 
 ```
 "scripts": {
@@ -31,23 +31,23 @@ npm init
 },
 ```  
 
-安装需要的packages（express, ejs, request以及sha1）,
+Install dependencies (express, ejs, request, and sha1),
 
 ```
 npm install --save express ejs request sha1
 ```
 
-安装TypeScript以及之前安装的packages的类型定义。
+Install TypeScript and type definition files for installed packages,
 
 ```
 npm install --save-dev typescript @types/node @types/express @types/request @types/sha1
 ```
 
-由于暂时[DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)中并没有JSSDK相关的类型定义文件(.d.ts)，请将本项目中的`types`文件夹（包含类型定义文件`wechat.d.ts`）复制到根目录（`wxapp`）中以便TypeScript获取JSSDK的类型定义。
+Since [DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped) does not have type definitions for WeChat JSSDK at the mement , please copy the `types` folder containing `wechat.d.ts` to the project root folder (`wxapp`).
 
-## 配置TypeScript
+## Configure TypeScript
 
-在`wxapp`根目录下添加TypeScript配置文件`tsconfig.json`，
+Add TypeScript configuration file `tsconfig.json` under the project root folder,
 
 ```js
 {
@@ -59,17 +59,17 @@ npm install --save-dev typescript @types/node @types/express @types/request @typ
 }
 ```
 
-可以根据项目的需求自行添加[其他编译选项](https://www.typescriptlang.org/docs/handbook/compiler-options.html)，比如`strict`。
+You can add [other compiler flags](https://www.typescriptlang.org/docs/handbook/compiler-options.html) (e.g. `strict`) based on your own need.
 
-## 获取jsapi_ticket
+## Get jsapi_ticket
 
-对应[通过config接口注入权限验证配置](https://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html#.E6.AD.A5.E9.AA.A4.E4.B8.89.EF.BC.9A.E9.80.9A.E8.BF.87config.E6.8E.A5.E5.8F.A3.E6.B3.A8.E5.85.A5.E6.9D.83.E9.99.90.E9.AA.8C.E8.AF.81.E9.85.8D.E7.BD.AE)文档，调用微信JSSDK需要在自己的服务器后台向微信服务器获取jsapi_ticket并在前端通过`wx.config`进行验证。大致实现流程，
+According to [WeChat documentation](https://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html#.E6.AD.A5.E9.AA.A4.E4.B8.89.EF.BC.9A.E9.80.9A.E8.BF.87config.E6.8E.A5.E5.8F.A3.E6.B3.A8.E5.85.A5.E6.9D.83.E9.99.90.E9.AA.8C.E8.AF.81.E9.85.8D.E7.BD.AE), using WeChat JSSDK requires getting jsapi_ticket from WeChat server on our server side and then using `wx.config` to get API permission on the cliend side. A rough flow looks like below,
 
 <p align="center">
-    <img src ="images/server_diagram.PNG"/>
+    <img src ="images/server_diagram_en.PNG"/>
 </p>
 
-在根目录添加后台的初始文件`index.ts`，
+Add `index.ts` in the root folder,
 
 ```ts
 import * as express from "express";
@@ -128,7 +128,8 @@ app.listen(8080);
 
 ```
 
-在`index.ts`中修改并填入自己的appId等等参数，
+Fill in your appId and other metadata in `index.ts`,
+
 ```ts
 // Insert metadata
 let appId = '';                     // Insert your appId
@@ -137,19 +138,20 @@ let url = '';                       // insert host url, e.g. http://wxapp.azurew
 let nonceStr = 'hellotypescript';   // insert any string
 ```
 
-建立的node.js+express后台会通过`getWXConfig`向微信服务器[获取jsapi_ticket](https://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html#.E8.8E.B7.E5.8F.96api_ticket)，并将[wx.config](https://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html#.E6.AD.A5.E9.AA.A4.E4.B8.89.EF.BC.9A.E9.80.9A.E8.BF.87config.E6.8E.A5.E5.8F.A3.E6.B3.A8.E5.85.A5.E6.9D.83.E9.99.90.E9.AA.8C.E8.AF.81.E9.85.8D.E7.BD.AE)所需的参数通过ejs渲染(`res.render(...)`)至客户端页面。
+Our server will [get jsapi_ticket](https://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html#.E8.8E.B7.E5.8F.96api_ticket) from WeChat server through `getWXConfig`, and render the signature for [wx.config](https://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html#.E6.AD.A5.E9.AA.A4.E4.B8.89.EF.BC.9A.E9.80.9A.E8.BF.87config.E6.8E.A5.E5.8F.A3.E6.B3.A8.E5.85.A5.E6.9D.83.E9.99.90.E9.AA.8C.E8.AF.81.E9.85.8D.E7.BD.AE) in client side html through ejs.
 
-在`index.ts`中已定义将后台推至客户端的文件放入`/views`（包含所有需要ejs渲染的`html`文件）以及`/public`（其余的文件）文件夹。之后的步骤将覆盖前端的页面。
+Within `index.ts`, we've defined our client side files to be stored in `/views` (`html` to be rendered by ejs) and `/public` (other files). The next step will cover client side pages.
+
 ``` ts
 app.set('views', __dirname + '/views');                 // set views dir
 app.use(express.static('public'))                       // expose assets in /public`
 ```
 
-# 客户端页面
+# Client side pages
 
 ## index.html
 
-在根目录下建立`views`文件夹并在其中添加`index.html`（推至客户端的主页），
+Create `views` folder under the root folder and add `index.html`,
 
 ```html
 <!DOCTYPE html>
@@ -212,11 +214,11 @@ app.use(express.static('public'))                       // expose assets in /pub
 </html>
 ```
 
-`index.html`中引入了微信JSSDK（`http://res.wx.qq.com/open/js/jweixin-1.0.0.js`）以及将在客户端实现的简单的demo（`/js/demo.js`）。嵌入的JavaScript包含了之前渲染的`getWXConfig`提供的讯息并通过`wx.config`注入权限验证配置。
+`index.html` includes the JSSDK (`http://res.wx.qq.com/open/js/jweixin-1.0.0.js`) and a simple demo (`/js/demo.js`). The embedded JavaScript includes rendered signature from `getWXConfig` and uses `wx.config` to get API permission from WeChat.
 
 ## demo.js
 
-在根目录下建立`public/js`文件夹，并在其中添加`demo.ts`,
+Create `public/js` folder under the root folder, and add `demo.ts`,
 
 ```ts
 wx.ready(()=>{
@@ -234,19 +236,19 @@ wx.ready(()=>{
 wx.error((err) => alert(err));
 ```
 
-在这个简化的例子中，我们仅使用`wx.openLocation`打开地图，但在`demo.js`中你可以尝试使用任何在`JsApiList`中申请的API。
+In this simple demo, we only use `wx.openLocation` to open a map, but you can try calling any API from `JsApiList` in `demo.js`.
 
-# 生成与部署
+# Build and deploy
 
-将`.ts`文件编译成`.js`，
+Transpile `.ts` files to `.js`,
 
 ```
 node run-script build-ts
 ```
 
-部署至服务器。
+Deploy the project to server.
 
-将页面所在的网址转换成二维码，打开微信扫一扫便可看到成果。
+After deployment, translate your URL to QR code and open 微信扫一扫 to see the demo in action.
 
 <p align="center">
     <img src ="images/demo.PNG"/>
