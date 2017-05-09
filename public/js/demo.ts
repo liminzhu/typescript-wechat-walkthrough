@@ -1,4 +1,4 @@
-wx.ready(()=>{
+wx.ready(() => {
     // open specifc location on map
     wx.openLocation({
         latitude: 0,

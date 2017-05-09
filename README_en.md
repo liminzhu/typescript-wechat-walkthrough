@@ -8,7 +8,7 @@ This tutorial covers a basic sample using [WeChat JSSDK](https://mp.weixin.qq.co
 
 1. Get your own domain and node.js server. See [Create a Node.js Application on Web App](https://docs.microsoft.com/en-us/azure/app-service-web/app-service-web-get-started-nodejs) for using Azure.
 
-2. Finish [step 1 - binding domain name](https://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html#.E6.AD.A5.E9.AA.A4.E4.B8.80.EF.BC.9A.E7.BB.91.E5.AE.9A.E5.9F.9F.E5.90.8D). If you don't have an official WeChat account, you can apply for a [test account](https://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=sandbox/login). Keep your appId, appsecret and URL at hand.
+2. Finish [step 1 - binding domain name](https://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html#.E6.AD.A5.E9.AA.A4.E4.B8.80.EF.BC.9A.E7.BB.91.E5.AE.9A.E5.9F.9F.E5.90.8D). If you don't have an official WeChat account, you can apply for a [test account](https://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=sandbox/login). Keep your appId, appsecret and host URL at hand.
 
 # Set up node.js/express
 
@@ -144,7 +144,7 @@ Within `index.ts`, we've defined our client side files to be stored in `/views` 
 
 ``` ts
 app.set('views', __dirname + '/views');                 // set views dir
-app.use(express.static('public'))                       // expose assets in /public`
+app.use(express.static('public'))                       // expose assets in /public
 ```
 
 # Client side pages
@@ -221,7 +221,7 @@ Create `views` folder under the root folder and add `index.html`,
 Create `public/js` folder under the root folder, and add `demo.ts`,
 
 ```ts
-wx.ready(()=>{
+wx.ready(() => {
     // open specifc location on map
     wx.openLocation({
         latitude: 0,
@@ -243,7 +243,7 @@ In this simple demo, we only use `wx.openLocation` to open a map, but you can tr
 Transpile `.ts` files to `.js`,
 
 ```
-node run-script build-ts
+npm run build-ts
 ```
 
 Deploy the project to server.

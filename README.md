@@ -8,7 +8,7 @@
 
 1. 拥有/申请网页将使用的域名以及能够使用Node.js的服务器。可参照[Create a Node.js Application on Web App](https://docs.microsoft.com/en-us/azure/app-service-web/app-service-web-get-started-nodejs)文档使用Azure。
 
-2. 完成微信开发文档[步骤一：绑定域名](https://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html#.E6.AD.A5.E9.AA.A4.E4.B8.80.EF.BC.9A.E7.BB.91.E5.AE.9A.E5.9F.9F.E5.90.8D)。如果没有自己的公众号，可注册并使用微信[测试号](https://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=sandbox/login)。记录下自己的appId, appsecret以及将使用的URL。
+2. 完成微信开发文档[步骤一：绑定域名](https://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html#.E6.AD.A5.E9.AA.A4.E4.B8.80.EF.BC.9A.E7.BB.91.E5.AE.9A.E5.9F.9F.E5.90.8D)。如果没有自己的公众号，可注册并使用微信[测试号](https://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=sandbox/login)。记录下自己的appId, appsecret以及将使用的host URL。
 
 # 搭建node.js/express后台
 
@@ -142,7 +142,7 @@ let nonceStr = 'hellotypescript';   // insert any string
 在`index.ts`中已定义将后台推至客户端的文件放入`/views`（包含所有需要ejs渲染的`html`文件）以及`/public`（其余的文件）文件夹。之后的步骤将覆盖前端的页面。
 ``` ts
 app.set('views', __dirname + '/views');                 // set views dir
-app.use(express.static('public'))                       // expose assets in /public`
+app.use(express.static('public'))                       // expose assets in /public
 ```
 
 # 客户端页面
@@ -219,7 +219,7 @@ app.use(express.static('public'))                       // expose assets in /pub
 在根目录下建立`public/js`文件夹，并在其中添加`demo.ts`,
 
 ```ts
-wx.ready(()=>{
+wx.ready(() => {
     // open specifc location on map
     wx.openLocation({
         latitude: 0,
@@ -241,7 +241,7 @@ wx.error((err) => alert(err));
 将`.ts`文件编译成`.js`，
 
 ```
-node run-script build-ts
+npm run build-ts
 ```
 
 部署至服务器。
